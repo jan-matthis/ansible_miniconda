@@ -1,0 +1,11 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+  - name: Check miniconda version by execution
+    command: "conda --version"
+    register: conda_exec_version
+    changed_when: false
+  - name: Assert exit code indicating success
+    assert:
+      that: conda_exec_version.rc == 0

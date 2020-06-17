@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include jan_matthis.miniconda"
+      include_role:
+        name: "jan_matthis.miniconda"
+      vars:
+        miniconda_path_append_file: "{{ansible_env.HOME}}/.bashrc"
+        miniconda_conda_sh_append_file: "{{ansible_env.HOME}}/.bashrc"

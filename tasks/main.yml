@@ -1,0 +1,64 @@
+---
+
+- name: Check whether Miniconda is present
+  stat: "path={{ miniconda_dir }}/bin"
+  register: miniconda_bin_dir
+  changed_when: false
+
+- name: Download installer
+  get_url:
+    url: "{{ miniconda_installer_url }}"
+    dest: "{{ miniconda_installer_dest }}"
+    checksum: "{{ miniconda_installer_checksum }}"
+    timeout: "{{ miniconda_download_timeout }}"
+    mode: 0755
+  when: not miniconda_bin_dir.stat.exists
+
+- name: Run installer
+  command: "{{ miniconda_installer_dest }} -b -p {{ miniconda_dir }}"
+  args:
+    creates: "{{ miniconda_dir }}"
+  when: not miniconda_bin_dir.stat.exists
+
+- name: Remove installer
+  file:
+    path: "{{ miniconda_installer_dest }}"
+    state: absent
+  when: not miniconda_bin_dir.stat.exists
+
+- name: Create symbolic link
+  become: yes
+  become_user: root
+  with_items:
+    - conda
+  file:
+    src: '{{ miniconda_dir }}/bin/{{ item }}'
+    dest: '{{ miniconda_symlink_dir }}/bin/{{ item }}'
+    state: link
+  when: miniconda_symlink
+
+- name: Append to PATH
+  blockinfile:
+    path: "{{ miniconda_path_append_file }}"
+    state: present
+    create: yes
+    block: |
+      # Miniconda
+      if [ -d "{{ miniconda_dir }}/bin" ] ; then
+          export PATH="{{ miniconda_dir }}/bin:$PATH"
+      fi
+    marker: '# {mark} ANSIBLE MANAGED BLOCK jan_matthis.miniconda #1'
+  when: miniconda_path_append
+
+- name: Append conda.sh call
+  blockinfile:
+    path: "{{ miniconda_conda_sh_append_file }}"
+    state: present
+    create: yes
+    block: |
+      # Miniconda
+      if [ -d "{{ miniconda_dir }}/bin" ] ; then
+        . {{ miniconda_dir }}/etc/profile.d/conda.sh
+      fi
+    marker: '# {mark} ANSIBLE MANAGED BLOCK jan_matthis.miniconda #2'
+  when: miniconda_conda_sh_append

@@ -1,0 +1,5 @@
+---
+
+miniconda_installer_url: "{{ miniconda_mirror }}{{  miniconda_installer }}"
+miniconda_installer_checksum: "{{ miniconda_installer_checksums[miniconda_installer] }}"
+miniconda_installer_dest: "{{ miniconda_download_dir }}/{{ miniconda_installer }}"

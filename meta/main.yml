@@ -1,0 +1,19 @@
+galaxy_info:
+  role_name: miniconda
+  description: Installs Miniconda on Unix systems
+  author: Jan-Matthis Lueckmann
+  license: MIT
+  min_ansible_version: 2.5
+  platforms:  # https://galaxy.ansible.com/api/v1/platforms/
+  - name: GenericLinux
+    versions:
+      - all
+  galaxy_tags:
+    - miniconda
+    - python
+    - conda
+    - anaconda
+    - virtualenv
+    - development
+
+dependencies: []
