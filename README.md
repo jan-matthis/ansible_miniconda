@@ -54,8 +54,6 @@ miniconda_download_timeout: 600
 
 ## Example
 
-Installation on servers without administrator rights:
-
 ```yaml
 - hosts: servers
   include_role:
