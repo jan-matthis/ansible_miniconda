@@ -1,11 +1,6 @@
 # Miniconda
 
-Ansible role to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
-
-
-## Requirements
-
-Unix system
+Ansible role to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) on Unix.
 
 
 ## Installation
